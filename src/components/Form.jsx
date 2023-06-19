@@ -19,16 +19,30 @@ const Form = ({setRecipes}) => {
     const file = inputFile.files[0]
     const reader = new FileReader()
 
-    reader.readAsBinaryString(file)
+    if (reader.result !== null) {
+      reader.readAsBinaryString(file)
 
-    reader.onload = function (e) {
-      const image = btoa(reader.result)
+      reader.onload = function (e) {
+        const image = btoa(reader.result)
 
+        const recipe = {
+          name: nameRecipe,
+          time: timeRecipe,
+          ingredients: ingredients,
+          image: image
+        }
+
+        setRecipes((previousRecipes => [...previousRecipes, recipe]))
+        setInputsIngredients([])
+
+        event.target.reset()
+      }
+    } else {
       const recipe = {
         name: nameRecipe,
         time: timeRecipe,
         ingredients: ingredients,
-        image: image
+        image: ''
       }
 
       setRecipes((previousRecipes => [...previousRecipes, recipe]))
